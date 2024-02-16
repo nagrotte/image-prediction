@@ -62,10 +62,35 @@ test_set = test_datagen.flow_from_directory('Datasets/test',
                                             batch_size = 32,
                                             class_mode = 'categorical')
 
-r = model.fit_generator(
-  training_set,
-  validation_data=test_set,
-  epochs=20,
-  steps_per_epoch=len(training_set),
-  validation_steps=len(test_set)
-)
+try:
+    r = model.fit_generator(
+        training_set,
+        validation_data=test_set,
+        epochs=20,
+        steps_per_epoch=len(training_set),
+        validation_steps=len(test_set)
+    )
+
+except Exception as e:
+    print("An error occurred during training:", e)
+    # Optionally, you can log the error or perform other actions
+
+    # Continue with additional code
+    print("Continuing execution after handling the error.")
+    # Additional code here
+    
+
+import matplotlib.pyplot as plt
+# plot the loss
+plt.plot(r.history['loss'], label='train loss')
+plt.plot(r.history['val_loss'], label='val loss')
+plt.legend()
+plt.show()
+plt.savefig('LossVal_loss')
+
+# plot the accuracy
+plt.plot(r.history['accuracy'], label='train acc')
+plt.plot(r.history['val_accuracy'], label='val acc')
+plt.legend()
+plt.show()
+plt.savefig('AccVal_acc')
